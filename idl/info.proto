@@ -1,0 +1,59 @@
+// 默认使用的是 proto2
+
+syntax = "proto3";
+
+package pb;
+
+// 编译protobuf 
+// -------------------------------------------------
+// C++ 编译命令
+// protoc --cpp_out=./ *.proto  ==> xx.pb.cc , xx.pb.h
+// -------------------------------------------------
+// golang 中编译的命令
+// protoc --go_out=./ *.proto   ==> go.pb.go
+// -------------------------------------------------
+
+enum Week{
+    Monday = 0; // 枚举值必须以 0 开始
+    Turesday = 1;
+}
+
+// -------------------------------------------------
+// 数据编号可以不从 1 开始，但是不能重复, 
+// (19000~19999) 是协议内部实现使用，不能使用
+
+message Student{
+    // 整形
+    int32 age = 1;
+    // 字符串
+    string name = 2;
+    // 类型嵌套
+    People p = 3;
+    // 数组
+    repeated int32 score = 4;
+    // 枚举
+    Weeek w = 5;
+    // 联合体(联合体中编号不能与外部重复)
+    oneof data {
+        string teacher = 6;
+    }
+}
+
+message People {
+    int32 = weight = 1;
+}
+
+/*
+添加微服务语法
+--------------------------------------------
+service service_name {
+    rpc func_method(inArg) returns(outArg)
+}
+--------------------------------------------
+    > 默认protobuf 编译期间，不编译服务，要想编译，需要使用gRPC
+    > 使用的编译指令：protoc --go_out=plugins=grpc:./ *.proto
+*/
+
+service bj38{
+    rpc Say(People)returns(Student);
+}

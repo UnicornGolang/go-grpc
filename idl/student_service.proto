@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package idl;
+
+option go_package = "./idl/pb;student_service";
+
+// 字段中的数字表示的是 pb 中序列化的赋值顺序
+message  Student {
+  // 字段的驼峰形式就是转化后的 go 中结构体的成员变量
+  string name = 1;
+  repeated string Location = 4;
+  map<string, float> Scores = 3;
+  bool Gender = 5;
+  int32 Age = 6;
+  float Height = 7;
+}
+
+message Request {
+  string studentId = 1;
+}
+
+// 服务定义，每一个接口都使用 rpc 开始，
+// 需要定义服务的函数名称, 请求的参数类型，返回的参数类型, 分号结尾
+// 服务在默认的 protoc 编译选项中不会进行编译，需要明确指定参数才能编译
+service StudentService {
+  rpc GetStudentInfo(Request) returns (Student);
+}
